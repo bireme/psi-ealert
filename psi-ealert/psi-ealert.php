@@ -9,11 +9,14 @@ Author: BIREME/PAHO/WHO
 Author URI: https://github.com/bireme
 */
 
+define('PLUGIN_DIRNAME', 'psi-ealert');
+define('PLUGIN_SLUG', 'ealert');
+
+define('PLUGIN_URL', WP_PLUGIN_URL . '/' . PLUGIN_DIRNAME);
+
 define('TEMPLATES', dirname(__FILE__) . "/templates");
 define('CORE', dirname(__FILE__) . "/core");
-
-// arquivo que recebe as requisições ajax
-define('REQUESTS_FILE', WP_PLUGIN_URL . '/psi-ealert/core/meta-box-posts-ajax.php');
+define('JS', PLUGIN_URL . "/js");
 
 // cria o post-type
 function type_post_ealert() {
@@ -47,7 +50,7 @@ function type_post_ealert() {
         'supports' => array('title','editor', 'revisions')
       );
  
-	register_post_type( 'ealert' , $args );
+	register_post_type( PLUGIN_SLUG , $args );
 	flush_rewrite_rules();
 }
 // ativa o post type
@@ -68,9 +71,29 @@ function meta_box_posts(){
 // cria a funcao que salva o metabox junto com o post-type
 function save_ealert_post(){
     global $post;        
-    update_post_meta($post->ID, 'valor_meta', $_POST['valor_meta']);
+    update_post_meta($post->ID, 'psi-ealert-posts', $_POST['psi-ealert-posts']);
 }
 // ativa o salvar
 add_action('save_post', 'save_ealert_post');
+
+
+// função que chama a criação do menu de configurações
+function ealert_menu() {
+	add_options_page('Configurações de e-Alert', 'e-Alert', 'manage_options', 'ealert-config', 'ealert_options');
+}
+
+// função que chama a página de config
+function ealert_options() {
+	if (!current_user_can('manage_options'))  {
+		wp_die( __('Você não tem permissões suficientes para acessar esta página.') );
+	}
+	require_once(CORE . "/config-panel.php");
+}
+
+// ativando page
+add_action('admin_menu', 'ealert_menu');
+
+// adicionando options de config
+add_option('ealert-config', '', '', 'yes');
 
 ?>

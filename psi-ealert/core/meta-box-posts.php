@@ -1,47 +1,53 @@
-<?php
+<?php 
 
-$posts = get_posts("posts_per_page=50");
+global $post;
+
+// pega os posts desse elaert
+$posts_in_ealert = get_post_meta($post->ID, "psi-ealert-posts");
+$posts_in_ealert = $posts_in_ealert[0];
+
+// caso seja um new post, ele seta vazio para não quebrar a tabela de posts
+if($posts_in_ealert == "") {
+	$posts_in_ealert = array();
+}
+
+// chama os ultimos 50 posts
+$config = get_option('ealert-config');
+$posts = get_posts("posts_per_page=" . $config['qtd-post']);
 
 ?>
 
-<style>
-	.ealert-posts table {
-		width: 100%;
-		border: 1px solid #000;
-	}
-
-	.ealert-posts table .header {
-		font-weight: bold;
-	}
-	.ealert-posts .button-bar {
-		margin: 10px;
-	}
-</style>
-
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
+<script src="<?=JS?>/datatables/js/jquery.dataTables.js" type="text/javascript"></script>
 
-<div class='ealert-posts' id='ealert-posts'>
-	<div class='button-bar'>
-		<select id='order_by'>
-			<option value=''>- Ordenar por -</option>
-			<option value='desc'>Mais novo</option>
-			<option value='asc'>Mais Velho</option>
-		</select>
-	</div>
+<script>
+	$(document).ready(function() {
+	 $('#posts').dataTable();
+	});
+</script>
+
+<div>
 	<form name='ealert-posts' method='POST' action="">
-		<table>
-			<tr class='header'>
-				<td>Selecionar</td>
-				<td>Post</td>
-				<td>Data</td>
-			</tr>
-			<tbody>
+		<input type='hidden' name='controller' value='send' />
+		<table id="posts">
+			<thead>
+				<tr>
+					<td></td>
+					<td>Post</td>
+					<td>Data</td>
+				</tr>
+			</thead>
+			<tbody id="Pagination">
 				<?php if(count($posts) > 0): ?>
-					<?php foreach($posts as $post): ?>
+					<?php foreach($posts as $unique): ?>
 						<tr>
-							<td><input type="checkbox" name="post-check[]" /></td>
-							<td><?=$post->post_title?></td>
-							<td><?=$post->post_date?></td>
+							<? if(in_array($unique->ID, $posts_in_ealert)): ?>
+								<td><input type="checkbox" name="psi-ealert-posts[]" value="<?=$unique->ID?>" checked="checked"/></td>
+							<? else: ?>
+								<td><input type="checkbox" name="psi-ealert-posts[]" value="<?=$unique->ID?>" /></td>
+							<? endif ?>
+							<td><?=$unique->post_title?></td>
+							<td><?=$unique->post_date?></td>
 						</tr>
 					<?php endforeach; ?>
 				<?php endif; ?>
