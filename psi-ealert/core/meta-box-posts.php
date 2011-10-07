@@ -17,18 +17,6 @@ $posts = get_posts("posts_per_page=" . $config['qtd-post']);
 
 ?>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.4/jquery.min.js" type="text/javascript"></script>
-<script src="<?=JS?>/datatables/js/jquery.dataTables.js" type="text/javascript"></script>
-
-<script>
-	$(document).ready(function() {
-	 $('#posts').dataTable();
-	 
-	 $('#posts_next').html('>');
-	 $('#posts_previous').html('<');
-	});
-</script>
-
 <div>
 	<form name='ealert-posts' method='POST' action="">
 		<input type='hidden' name='controller' value='send' />
