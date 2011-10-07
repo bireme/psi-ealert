@@ -46,7 +46,7 @@ function type_post_ealert() {
         'has_archive' => true,
         'hierarchical' => false,
         'menu_position' => 25,
-		'register_meta_box_cb' => 'posts_meta_box',      
+		'register_meta_box_cb' => 'posts_meta_box',
         'supports' => array('title','editor', 'revisions')
       );
  
@@ -56,22 +56,28 @@ function type_post_ealert() {
 // ativa o post type
 add_action('init', 'type_post_ealert');
 
-// cria um metabox chamado 'posts'
-// Este metabox é responsável por selecionar os posts que irão no corpo do e-alert
 function posts_meta_box(){        
 	add_meta_box('meta_box_posts', __('Posts'), 'meta_box_posts', 'ealert', 'normal', 'high');
+	add_meta_box('meta_box_template', 'Template', 'meta_box_template', 'ealert', 'side', 'high');
 }
 
-// conteúdo dentro do metabox
+// cria um metabox chamado 'posts'
+// Este metabox é responsável por selecionar os posts que irão no corpo do e-alert
 function meta_box_posts(){
 	require_once(CORE . "/meta-box-posts.php");
 }
 
+// cria um metabox chamado 'template'
+// Metabox responsável por definir o template atual
+function meta_box_template(){
+	require_once(CORE . "/meta-box-template.php");
+}
 
-// cria a funcao que salva o metabox junto com o post-type
+// cria a funcao que salva os metaboxes junto com o post-type
 function save_ealert_post(){
     global $post;        
     update_post_meta($post->ID, 'psi-ealert-posts', $_POST['psi-ealert-posts']);
+    update_post_meta($post->ID, 'psi-ealert-template', $_POST['psi-ealert-template']);
 }
 // ativa o salvar
 add_action('save_post', 'save_ealert_post');
