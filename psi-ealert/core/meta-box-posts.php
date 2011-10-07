@@ -17,8 +17,12 @@ $posts = get_posts("posts_per_page=" . $config['qtd-post']);
 
 ?>
 
-<div>
-	<form name='ealert-posts' method='POST' action="">
+<style>
+	.ealert-posts { height: 300px; overflow: auto;  }
+</style>
+
+<div class='ealert-posts'>
+	<form name='ealert-posts' method='POST' action="" >
 		<input type='hidden' name='controller' value='send' />
 		<table id="posts">
 			<thead>
@@ -28,7 +32,7 @@ $posts = get_posts("posts_per_page=" . $config['qtd-post']);
 					<td>Data</td>
 				</tr>
 			</thead>
-			<tbody id="Pagination">
+			<tbody>
 				<?php if(count($posts) > 0): ?>
 					<?php foreach($posts as $unique): ?>
 						<tr>
