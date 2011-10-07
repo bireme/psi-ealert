@@ -12,14 +12,19 @@
 					<?php
 						$meta = get_post_meta(get_the_ID(), 'psi-ealert-posts'); 
 						$meta = $meta[0];
+						if($meta == "") {
+							$meta = array();
+						}
 					?>			
 					<table>
 						<? foreach($meta as $id): ?>
 							<? $post = get_post($id); ?>
 							<tr>
-								<a href="<?=get_permalink($id)?>">
-									<?=$post->post_title?>
-								</a>
+								<td>
+									<a href="<?=get_permalink($id)?>">
+										<?=$post->post_title?>
+									</a>
+								<td>
 							</tr>
 						<? endforeach ?>
 					</table>

@@ -23,6 +23,9 @@ $posts = get_posts("posts_per_page=" . $config['qtd-post']);
 <script>
 	$(document).ready(function() {
 	 $('#posts').dataTable();
+	 
+	 $('#posts_next').html('>');
+	 $('#posts_previous').html('<');
 	});
 </script>
 
