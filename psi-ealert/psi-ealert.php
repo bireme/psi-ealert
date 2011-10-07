@@ -100,13 +100,16 @@ add_option('ealert-config', '', '', 'yes');
 add_action("template_redirect", 'ealert_redirect');
 
 function ealert_redirect() {
-	$templatefilename = 'single-ealert.php';
-	if (file_exists(TEMPLATEPATH . '/' . $templatefilename)) {
-	    $return_template = TEMPLATEPATH . '/' . $templatefilename;
-	} else {
-	    $return_template = CORE . '/' . $templatefilename;
+	global $wp;
+	if ($wp->query_vars["post_type"] == 'ealert') {
+		$templatefilename = 'single-ealert.php';
+		if (file_exists(TEMPLATEPATH . '/' . $templatefilename)) {
+		    $return_template = TEMPLATEPATH . '/' . $templatefilename;
+		} else {
+		    $return_template = CORE . '/' . $templatefilename;
+		}
+		do_theme_redirect($return_template);
 	}
-	do_theme_redirect($return_template);
 }
 
 function do_theme_redirect($url) {
