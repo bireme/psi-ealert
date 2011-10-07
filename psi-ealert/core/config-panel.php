@@ -3,8 +3,10 @@
 $config = get_option('ealert-config');
 
 if(isset($_POST['controller']) && $_POST['controller'] == 'send') {
+
 	$config = array(
 		'qtd-post' => $_POST['ealert-qtd-post'],
+		'template' => $_POST['ealert-template'],
 		'smtp' => array(
 			'host' => $_POST['ealert-smtp-host'],
 			'user' => $_POST['ealert-smtp-user'],
@@ -17,14 +19,27 @@ if(isset($_POST['controller']) && $_POST['controller'] == 'send') {
 if($config == "") {
 	$config = array(
 		'qtd-post' => 20,
+		'template' => 'default',
 		'smtp' => array(
 			'host' => 'smtp.example.com',
 			'user' => 'username@example.com',
 			'pass' => '123',
 		),
 	);
-} else {
-	
+}
+
+// pega o endereço do diretório
+$diretorio = TEMPLATES; 
+// abre o diretório
+$ponteiro  = opendir($diretorio);
+
+$templates = array();
+// monta os vetores com os itens encontrados na pasta
+while ($files = readdir($ponteiro)) {
+    $file = explode('.', $files);
+	if($file[count($file)-1] == "php") {
+		$templates[] = str_replace(".php", "", $files);
+	}
 }
 
 ?>
@@ -44,6 +59,23 @@ if($config == "") {
 					<td>
 						<input name="ealert-qtd-post" type="text" id="ealert-qtd-post" value="<?=$config['qtd-post']?>" class="small-text">
 						(quantidade de posts carregado no formulário de e-Alert)
+					</td>
+				</tr>
+				<tr valign="top">
+					<th scope="row">
+						<label for="ealert-theme">Tema do e-Alert</label>
+					</th>
+					<td>
+						<select name='ealert-template'>
+							<option></option>
+							<? foreach($templates as $template): ?>
+								<? if($config['template'] == $template): ?>
+									<option value='<?=$template?>' selected><?=$template?></option>
+								<? else: ?>
+									<option value='<?=$template?>'><?=$template?></option>
+								<? endif ?>
+							<? endforeach ?>
+						<select>
 					</td>
 				</tr>
 				<tr valign="top">

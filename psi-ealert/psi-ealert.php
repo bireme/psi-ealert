@@ -96,4 +96,27 @@ add_action('admin_menu', 'ealert_menu');
 // adicionando options de config
 add_option('ealert-config', '', '', 'yes');
 
+// adicionando nosso próprio tema para ealert-type
+add_action("template_redirect", 'ealert_redirect');
+
+function ealert_redirect() {
+	$templatefilename = 'single-ealert.php';
+	if (file_exists(TEMPLATEPATH . '/' . $templatefilename)) {
+	    $return_template = TEMPLATEPATH . '/' . $templatefilename;
+	} else {
+	    $return_template = CORE . '/' . $templatefilename;
+	}
+	do_theme_redirect($return_template);
+}
+
+function do_theme_redirect($url) {
+    global $post, $wp_query;
+    if (have_posts()) {
+        include($url);
+        die();
+    } else {
+        $wp_query->is_404 = true;
+    }
+}
+
 ?>
