@@ -75,6 +75,10 @@ function meta_box_template(){
 
 // cria a funcao que salva os metaboxes junto com o post-type
 function save_ealert_post(){
+
+	if ( defined( 'DOING_AUTOSAVE' ) && DOING_AUTOSAVE ) 
+      return;
+
     global $post;        
     update_post_meta($post->ID, 'psi-ealert-posts', $_POST['psi-ealert-posts']);
     update_post_meta($post->ID, 'psi-ealert-template', $_POST['psi-ealert-template']);
