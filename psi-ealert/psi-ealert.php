@@ -132,4 +132,13 @@ function do_theme_redirect($url) {
     }
 }
 
+function load_quicksearch() {
+    wp_register_script('quicksearch', JS . '/jquery.quicksearch.js');
+    wp_enqueue_script('jquery');
+    wp_enqueue_script('quicksearch');
+	
+}
+add_action('init', 'load_quicksearch');
+
+
 ?>

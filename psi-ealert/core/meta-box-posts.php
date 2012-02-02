@@ -13,23 +13,45 @@ if($posts_in_ealert == "") {
 
 // chama os ultimos 50 posts
 $config = get_option('ealert-config');
-$posts = get_posts("posts_per_page=" . $config['qtd-post']);
+$posts = get_posts("numberposts=-1&posts_per_page=" . $config['qtd-post']);
 
 ?>
 
-<style>
-	.ealert-posts { height: 300px; overflow: auto;  }
-</style>
+<script type="text/javascript">
+	$ = jQuery.noConflict();
+	$(document).ready(function(){
+		$('#id_search').quicksearch('table tbody tr');
+	});
+</script>
 
-<div class='ealert-posts'>
-	<form name='ealert-posts' method='POST' action="" >
+<style>
+	.ealert-posts { height: 300px; overflow: auto; }
+
+	thead tr {
+		font-weight: bold;
+		font-size: 110%;
+		text-align: center;
+		padding: 10px;
+		background: #efefef;
+	}
+
+	#id_search {
+		width: 100%;
+		margin: 1px 0 10px 0;
+	}
+</style>
+Buscar posts: 
+<input type="text" name="" id="id_search" value="">
+
+<div class='ealert-posts'>	
+	<form name='ealert-posts' method='POST' action="" >	
 		<input type='hidden' name='controller' value='send' />
 		<table id="posts">
 			<thead>
 				<tr>
-					<td></td>
-					<td>Post</td>
-					<td>Data</td>
+					<td width="10%"></td>
+					<td width="60%">Post</td>
+					<td width="30%">Data</td>
 				</tr>
 			</thead>
 			<tbody>
@@ -37,12 +59,14 @@ $posts = get_posts("posts_per_page=" . $config['qtd-post']);
 					<?php foreach($posts as $unique): ?>
 						<tr>
 							<? if(in_array($unique->ID, $posts_in_ealert)): ?>
-								<td><input type="checkbox" name="psi-ealert-posts[]" value="<?=$unique->ID?>" checked="checked"/></td>
+								<td width="10%"><input type="checkbox" name="psi-ealert-posts[]" value="<?=$unique->ID?>" checked="checked"/></td>
 							<? else: ?>
-								<td><input type="checkbox" name="psi-ealert-posts[]" value="<?=$unique->ID?>" /></td>
+								<td width="10%"><input type="checkbox" name="psi-ealert-posts[]" value="<?=$unique->ID?>" /></td>
 							<? endif ?>
-							<td><?=$unique->post_title?></td>
-							<td><?=$unique->post_date?></td>
+							<td width="60%"><?=$unique->post_title?></td>
+							<? $date = $unique->post_date; ?>
+							<? //$date = split(" ", $date); $date = $date[0]; ?>
+							<td width="30%" style="text-align: center"><?=$date?></td>
 						</tr>
 					<?php endforeach; ?>
 				<?php endif; ?>
