@@ -18,7 +18,7 @@ if(isset($_POST['controller']) && $_POST['controller'] == 'send') {
 
 if($config == "") {
 	$config = array(
-		'qtd-post' => 20,
+		'qtd-post' => 50,
 		'template' => 'default',
 		'smtp' => array(
 			'host' => 'smtp.example.com',
@@ -26,6 +26,7 @@ if($config == "") {
 			'pass' => '123',
 		),
 	);
+	update_option('ealert-config', $config);
 }
 
 // pega o endereço do diretório
@@ -78,7 +79,7 @@ while ($files = readdir($ponteiro)) {
 						<select>
 					</td>
 				</tr>
-				<tr valign="top">
+				<!--<tr valign="top">
 					<th scope="row">
 						<label for="ealert-smtp-host">Hostname do SMTP</label>
 					</th>
@@ -101,7 +102,7 @@ while ($files = readdir($ponteiro)) {
 					<td>
 						<input name="ealert-smtp-pass" type="password" id="ealert-smtp-pass" value="<?=$config['smtp']['pass']?>" class="text">				
 					</td>
-				</tr>
+				</tr>-->
 			</tbody>
 		</table>
 		<p class="submit"><input type="submit" name="submit" id="submit" class="button-primary" value="Salvar Alterações"></p>
