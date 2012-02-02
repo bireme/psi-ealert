@@ -18,21 +18,23 @@ define('TEMPLATES', dirname(__FILE__) . "/templates");
 define('CORE', dirname(__FILE__) . "/core");
 define('JS', PLUGIN_URL . "/js");
 
+define('POST_TYPE_NAME', 'Newsletter');
+
 // cria o post-type
 function type_post_ealert() {
 	$labels = array(
-			'name' => _x('e-Alerts', 'post type general name'),
-		    'singular_name' => _x('e-Alert', 'post type singular name'),
+			'name' => _x(POST_TYPE_NAME, 'post type general name'),
+		    'singular_name' => _x(POST_TYPE_NAME, 'post type singular name'),
 		    'add_new' => _x('Adicionar Novo', 'Novo item'),
-		    'add_new_item' => __('Nova e-Alert'),
-		    'edit_item' => __('Editar e-Alert'),
-		    'new_item' => __('Novo e-Alert'),
-		    'view_item' => __('Ver e-Alert'),
-		    'search_items' => __('Procurar e-Alerts'),
+		    'add_new_item' => __('Adicionar Nova ' . POST_TYPE_NAME),
+		    'edit_item' => __('Editar ' . POST_TYPE_NAME),
+		    'new_item' => __('Novo ' . POST_TYPE_NAME),
+		    'view_item' => __('Ver ' . POST_TYPE_NAME),
+		    'search_items' => __('Procurar ' . POST_TYPE_NAME),
 		    'not_found' =>  __('Nenhum registro encontrado'),
 		    'not_found_in_trash' => __('Nenhum registro encontrado na lixeira'),
 		    'parent_item_colon' => '',
-		    'menu_name' => 'e-Alert'	
+		    'menu_name' => POST_TYPE_NAME,
 		);
 
 	$args = array(
@@ -47,7 +49,7 @@ function type_post_ealert() {
         'hierarchical' => false,
         'menu_position' => 25,
 		'register_meta_box_cb' => 'posts_meta_box',
-        'supports' => array('title','editor', 'revisions')
+        'supports' => array('title','editor','revisions'),
       );
  
 	register_post_type( PLUGIN_SLUG , $args );
