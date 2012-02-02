@@ -13,7 +13,7 @@ if($posts_in_ealert == "") {
 
 // chama os ultimos 50 posts
 $config = get_option('ealert-config');
-$posts = get_posts("numberposts=-1&posts_per_page=" . $config['qtd-post']);
+$posts = get_posts("numberposts=" . $config['qtd-post']);
 
 ?>
 
